@@ -1,0 +1,27 @@
+{
+  "name": "manual",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Manual CDK deployment for UMCCR and AG",
+  "scripts": {
+    "dev-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataLocalDevTestObjectSigningStack",
+    "dev-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataLocalDevTestObjectSigningStack",
+    "agdemo-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataAustralianGenomicsDemoObjectSigningStack",
+    "agdemo-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataAustralianGenomicsDemoObjectSigningStack",
+    "ag-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataAustralianGenomicsObjectSigningStack",
+    "ag-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataAustralianGenomicsObjectSigningStack"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "2.0.0",
+    "@types/node": "18.16.2",
+    "aws-cdk": "2.77.0",
+    "prettier": "2.8.8",
+    "ts-node": "10.9.1",
+    "typescript": "5.0.4"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.77.0",
+    "constructs": "10.2.9",
+    "source-map-support": "0.5.21"
+  }
+}
