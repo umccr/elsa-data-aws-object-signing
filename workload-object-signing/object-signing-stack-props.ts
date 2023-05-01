@@ -15,6 +15,12 @@ export interface ObjectSigningStackProps extends StackProps {
   isDevelopment?: boolean;
 
   /**
+   * The name of a previously installed stack providing us with network/db/storage/cert infrastructure
+   * via cloud formation exports.
+   */
+  infrastructureStackName: string;
+
+  /**
    * The description of the infrastructure as used for the CloudFormation stack.
    * This gives devops an immediate feedback on the purpose of the stack so
    * should be descriptive of the service/project.

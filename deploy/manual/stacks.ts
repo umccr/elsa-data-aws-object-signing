@@ -21,6 +21,7 @@ new ObjectSigningStack(app, "ElsaDataLocalDevTestObjectSigningStack", {
   },
   tags: tags,
   isDevelopment: true,
+  infrastructureStackName: "ElsaDataLocalDevTestInfrastructureStack",
   description: description,
   iamSerial: 1,
   dataBucketPaths: {
@@ -33,7 +34,7 @@ new ObjectSigningStack(app, "ElsaDataLocalDevTestObjectSigningStack", {
 
 new ObjectSigningStack(
   app,
-  "ElsaDataAustralianGenomicsDemoObjectSigningStack",
+  "ElsaDataDemoAustralianGenomicsObjectSigningStack",
   {
     // the pipeline can only be deployed to 'ag'
     // it restricts the permissions to only a bucket that is suitable for demonstrations
@@ -43,12 +44,14 @@ new ObjectSigningStack(
     },
     tags: tags,
     isDevelopment: false,
+    infrastructureStackName:
+      "ElsaDataDemoAustralianGenomicsInfrastructureStack",
     description: description,
     iamSerial: 1,
     dataBucketPaths: {
       "elsa-test-data": ["FLAGSHIP_A/*"],
     },
-    secretsPrefix: "ElsaData", // pragma: allowlist secret
+    secretsPrefix: "ElsaDataDemo", // pragma: allowlist secret
   }
 );
 
@@ -60,10 +63,11 @@ new ObjectSigningStack(app, "ElsaDataAustralianGenomicsObjectSigningStack", {
   },
   tags: tags,
   isDevelopment: false,
+  infrastructureStackName: "ElsaDataAustralianGenomicsInfrastructureStack",
   description: description,
   iamSerial: 1,
   dataBucketPaths: {
-    // until security reviewed we don't want to allow any actual signing
+    // until security reviewed we don't want to allow any actual signing so this path is nonsense
     "agha-gdr-store-2.0": ["NOT_ENABLED/*"],
   },
   secretsPrefix: "ElsaData", // pragma: allowlist secret

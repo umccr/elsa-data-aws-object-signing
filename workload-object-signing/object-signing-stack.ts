@@ -10,16 +10,30 @@ import {
   User,
 } from "aws-cdk-lib/aws-iam";
 import { Secret } from "aws-cdk-lib/aws-secretsmanager";
+import { Service } from "aws-cdk-lib/aws-servicediscovery";
+import { createNamespaceFromLookup } from "./create-from-lookup";
 
 /**
- * A basic infrastructure stack that creates an IAM user
- * specifically for long term (multi day) object signing.
+ * A stack that creates an IAM user
+ * specifically for long term (multi day) object signing. It registers
+ * this user into the Elsa Data namespace for discovery.
  */
 export class ObjectSigningStack extends Stack {
   constructor(scope: Construct, id: string, props: ObjectSigningStackProps) {
     super(scope, id, props);
 
     this.templateOptions.description = props.description;
+
+    const namespace = createNamespaceFromLookup(
+      this,
+      props.infrastructureStackName
+    );
+
+    const service = new Service(this, "Service", {
+      namespace: namespace,
+      name: "ObjectSigning",
+      description: "Object signing service",
+    });
 
     const user = new User(this, "User", {});
 
@@ -58,18 +72,16 @@ export class ObjectSigningStack extends Stack {
       serial: props.iamSerial,
       status: AccessKeyStatus.ACTIVE,
     });
+
     const secret = new Secret(this, `${props.secretsPrefix || ""}Secret`, {
       secretStringValue: accessKey.secretAccessKey,
     });
 
-    new StringParameter(this, "AccessKeyIdParameter", {
-      parameterName: `/${id}/AccessKey/id`,
-      stringValue: accessKey.accessKeyId,
-    });
-
-    new StringParameter(this, "AccessKeySecretNameParameter", {
-      parameterName: `/${id}/AccessKey/secretName`,
-      stringValue: secret.secretName,
+    service.registerNonIpInstance("IamUser", {
+      customAttributes: {
+        accessKey: accessKey.accessKeyId,
+        accessKeySecretName: secret.secretName,
+      },
     });
   }
 }

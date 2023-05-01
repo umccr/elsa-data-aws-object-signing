@@ -1,7 +1,7 @@
 {
-  "name": "elsa-data-aws-object-signer",
+  "name": "elsa-data-aws-object-signing",
   "version": "1.0.0",
-  "description": "A manually deployable CDK stack for setting up AWS object signing in the UMCCR environment",
+  "description": "A CDK stack for adding Object Signing to an Elsa Data installation",
   "devDependencies": {
     "@tsconfig/node18": "2.0.0",
     "@types/node": "18.16.2",
