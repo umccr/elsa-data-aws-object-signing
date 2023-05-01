@@ -29,12 +29,14 @@ export class ObjectSigningStack extends Stack {
       props.infrastructureStackName
     );
 
+    // each type of Elsa Data egress registers as a service
     const service = new Service(this, "Service", {
       namespace: namespace,
       name: "ObjectSigning",
       description: "Object signing service",
     });
 
+    // we need a user to exist with the correct (limited) permissions
     const user = new User(this, "User", {});
 
     // read-only policies at the bucket level (possibly not needed at all - revisit)
@@ -74,13 +76,15 @@ export class ObjectSigningStack extends Stack {
     });
 
     const secret = new Secret(this, `${props.secretsPrefix || ""}Secret`, {
+      description:
+        "Secret containing the AWS_SECRET_ACCESS_KEY for an IAM user who does Elsa Data object signing",
       secretStringValue: accessKey.secretAccessKey,
     });
 
     service.registerNonIpInstance("IamUser", {
       customAttributes: {
-        accessKey: accessKey.accessKeyId,
-        accessKeySecretName: secret.secretName,
+        s3AccessKey: accessKey.accessKeyId,
+        s3AccessKeySecretName: secret.secretName,
       },
     });
   }

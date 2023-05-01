@@ -23,7 +23,7 @@ new ObjectSigningStack(app, "ElsaDataLocalDevTestObjectSigningStack", {
   isDevelopment: true,
   infrastructureStackName: "ElsaDataLocalDevTestInfrastructureStack",
   description: description,
-  iamSerial: 1,
+  iamSerial: 2,
   dataBucketPaths: {
     "umccr-10c-data-dev": ["*"],
     "umccr-10f-data-dev": ["*"],
