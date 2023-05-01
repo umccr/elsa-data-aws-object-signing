@@ -11,7 +11,7 @@ import {
 } from "aws-cdk-lib/aws-iam";
 import { Secret } from "aws-cdk-lib/aws-secretsmanager";
 import { Service } from "aws-cdk-lib/aws-servicediscovery";
-import { createNamespaceFromLookup } from "./create-from-lookup";
+import { createNamespaceFromLookup } from "./create-namespace-from-lookup";
 
 /**
  * A stack that creates an IAM user
