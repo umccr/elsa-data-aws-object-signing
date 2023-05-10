@@ -6,8 +6,8 @@
   "scripts": {
     "dev-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataLocalDevTestObjectSigningStack",
     "dev-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataLocalDevTestObjectSigningStack",
-    "agdemo-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataAustralianGenomicsDemoObjectSigningStack",
-    "agdemo-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataAustralianGenomicsDemoObjectSigningStack",
+    "agdemo-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataDemoAustralianGenomicsObjectSigningStack",
+    "agdemo-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataDemoAustralianGenomicsObjectSigningStack",
     "ag-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataAustralianGenomicsObjectSigningStack",
     "ag-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataAustralianGenomicsObjectSigningStack"
   },
