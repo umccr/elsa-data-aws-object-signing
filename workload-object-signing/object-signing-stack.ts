@@ -62,7 +62,7 @@ export class ObjectSigningStack extends Stack {
       const res: string[] = [];
       for (const [b, keys] of Object.entries(props.s3.dataBucketPaths)) {
         for (const k of keys) {
-          res.push(`arn:aws:s3::::${b}/${k}`);
+          res.push(`arn:aws:s3:::${b}/${k}`);
         }
       }
 
