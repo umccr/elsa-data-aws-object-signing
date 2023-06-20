@@ -59,7 +59,7 @@ new ObjectSigningStack(
       "ElsaDataDemoAustralianGenomicsInfrastructureStack",
     description: description,
     s3: {
-      iamSerial: 1,
+      iamSerial: 2,
       dataBucketPaths: {
         "elsa-test-data": ["FLAGSHIP_A/*"],
         "elsa-data-demo-agha-gdr-store": ["*"],
