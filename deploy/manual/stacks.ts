@@ -13,7 +13,7 @@ const tags = {
 const description =
   "Object signing users/secrets/policies for Elsa Data - an application for controlled genomic data sharing";
 
-new ObjectSigningStack(app, "ElsaDataLocalDevTestObjectSigningStack", {
+new ObjectSigningStack(app, "ElsaDataDevObjectSigningStack", {
   // this stack can only be deployed to UMCCR 'dev'
   env: {
     account: "843407916570",
@@ -21,10 +21,10 @@ new ObjectSigningStack(app, "ElsaDataLocalDevTestObjectSigningStack", {
   },
   tags: tags,
   isDevelopment: true,
-  infrastructureStackName: "ElsaDataLocalDevTestInfrastructureStack",
+  infrastructureStackName: "ElsaDataDevInfrastructureStack",
   description: description,
   s3: {
-    iamSerial: 2,
+    iamSerial: 1,
     dataBucketPaths: {
       "umccr-10c-data-dev": ["*"],
       "umccr-10f-data-dev": ["*"],
@@ -59,9 +59,8 @@ new ObjectSigningStack(
       "ElsaDataDemoAustralianGenomicsInfrastructureStack",
     description: description,
     s3: {
-      iamSerial: 2,
+      iamSerial: 1,
       dataBucketPaths: {
-        "elsa-test-data": ["FLAGSHIP_A/*"],
         "elsa-data-demo-agha-gdr-store": ["*"],
       },
     },
