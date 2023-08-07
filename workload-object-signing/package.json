@@ -41,6 +41,7 @@
     "jsii": "5.1.10",
     "jsii-pacmak": "1.86.1",
     "prettier": "3.0.1",
+    "publib": "^0.2.737",
     "ts-node": "10.9.1",
     "typescript": "5.1.6"
   }

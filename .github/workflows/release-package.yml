@@ -22,7 +22,7 @@ jobs:
           node-version: 18
           cache: "npm"
           cache-dependency-path: workload-object-signing/package-lock.json
-          registry-url: https://npm.pkg.github.com/
+      #          registry-url: https://npm.pkg.github.com/
 
       - run: npm ci
 
@@ -30,6 +30,8 @@ jobs:
 
       - run: npm run package
 
-      - run: npm publish
+      - run: npx publib-npm
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_REGISTRY: npm.pkg.github.com
+          NPM_ACCESS_LEVEL: public
