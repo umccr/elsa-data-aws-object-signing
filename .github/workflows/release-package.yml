@@ -1,6 +1,6 @@
 name: Release Package
 
-on: [push, pull_request]
+on: [push]
 
 defaults:
   run:
