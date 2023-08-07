@@ -1,5 +1,4 @@
-import { CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
-import { Construct } from "constructs";
+import { App, CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
 import { ObjectSigningStackProps } from "./object-signing-stack-props";
 import {
   AccessKey,
@@ -13,6 +12,16 @@ import { Service } from "aws-cdk-lib/aws-servicediscovery";
 import { createNamespaceFromLookup } from "./create-namespace-from-lookup";
 
 /**
+ * For JSII we need to export these property interfaces.
+ */
+export {
+  ObjectSigningStackProps,
+  GCSProps,
+  S3Props,
+  CloudFlareProps,
+} from "./object-signing-stack-props";
+
+/**
  * A stack that creates an IAM user
  * specifically for long term (multi day) object signing. It registers
  * this user into the Elsa Data namespace for discovery. If asked it was also
@@ -20,7 +29,7 @@ import { createNamespaceFromLookup } from "./create-namespace-from-lookup";
  * running in AWS but able to sign GCS/CloudFlare urls)
  */
 export class ObjectSigningStack extends Stack {
-  constructor(scope: Construct, id: string, props: ObjectSigningStackProps) {
+  constructor(scope: App, id: string, props: ObjectSigningStackProps) {
     super(scope, id, props);
 
     this.templateOptions.description = props.description;
