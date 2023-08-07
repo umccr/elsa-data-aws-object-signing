@@ -10,8 +10,8 @@
     "agdemo-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataDemoAustralianGenomicsObjectSigningStack",
     "ag-deploy": "cdk --app 'npx ts-node stacks.ts' deploy ElsaDataAustralianGenomicsObjectSigningStack",
     "ag-destroy": "cdk --app 'npx ts-node stacks.ts' destroy ElsaDataAustralianGenomicsObjectSigningStack",
-    "doctor": "cdk --app 'npx ts-node stacks.ts' doctor ElsaDataLocalDevTestObjectSigningStack",
-    "synth": "cdk --app 'npx ts-node stacks.ts' synth ElsaDataLocalDevTestObjectSigningStack"
+    "metadata": "cdk --app 'npx ts-node stacks.ts' metadata ElsaDataDevObjectSigningStack",
+    "synth": "cdk --app 'npx ts-node stacks.ts' synth ElsaDataDevObjectSigningStack"
   },
   "devDependencies": {
     "@tsconfig/node18": "18.2.0",

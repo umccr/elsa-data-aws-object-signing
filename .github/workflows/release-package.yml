@@ -1,0 +1,31 @@
+name: Release Package
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    working-directory: workload-object-signing
+
+jobs:
+  publish-to-github-package-registry:
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: workload-object-signing/package-lock.json
+          registry-url: https://npm.pkg.github.com/
+
+      - run: npm package
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

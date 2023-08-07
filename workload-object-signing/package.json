@@ -8,6 +8,13 @@
     "name": "Andrew Patterson",
     "email": "Your email address"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umccrf/elsa-data-aws-object-signing.git"
+  },
+  "publishConfig": {
+    "@umccr:registry": "https://npm.pkg.github.com"
+  },
   "main": "object-signing-stack.js",
   "types": "object-signing-stack.d.ts",
   "scripts": {
@@ -36,9 +43,5 @@
     "prettier": "3.0.1",
     "ts-node": "10.9.1",
     "typescript": "5.1.6"
-  },
-  "repository": {
-    "type": "github",
-    "url": "Your repository URL"
   }
 }
