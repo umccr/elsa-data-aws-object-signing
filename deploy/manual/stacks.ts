@@ -1,8 +1,11 @@
 import "source-map-support/register";
-import * as cdk from "aws-cdk-lib";
-import { ObjectSigningStack } from "../../workload-object-signing/object-signing-stack";
+import { ObjectSigningStack } from "workload-object-signing";
+import { App, Aspects } from "aws-cdk-lib";
+import { AwsSolutionsChecks } from "cdk-nag";
 
-const app = new cdk.App();
+const app = new App();
+
+Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
 
 // tags for our stacks
 const tags = {
@@ -20,7 +23,6 @@ new ObjectSigningStack(app, "ElsaDataDevObjectSigningStack", {
     region: "ap-southeast-2",
   },
   tags: tags,
-  isDevelopment: true,
   infrastructureStackName: "ElsaDataDevInfrastructureStack",
   description: description,
   s3: {
@@ -54,7 +56,6 @@ new ObjectSigningStack(
       region: "ap-southeast-2",
     },
     tags: tags,
-    isDevelopment: false,
     infrastructureStackName:
       "ElsaDataDemoAustralianGenomicsInfrastructureStack",
     description: description,
@@ -84,7 +85,6 @@ new ObjectSigningStack(app, "ElsaDataAustralianGenomicsObjectSigningStack", {
     region: "ap-southeast-2",
   },
   tags: tags,
-  isDevelopment: false,
   infrastructureStackName: "ElsaDataAustralianGenomicsInfrastructureStack",
   description: description,
   s3: {

@@ -1,19 +1,38 @@
 import { StackProps } from "aws-cdk-lib";
 
-export interface ObjectSigningStackProps extends StackProps {
+export interface S3Props {
   /**
-   * A master control switch that tells us that this infrastructure is destined
-   * for an environment that contains only development data. This will
-   * control whether databases and buckets 'auto-delete' (for instance). It
-   * may change the visibility of some resources (RDS instances) - but should in
-   * no way expose any resource insecurely (i.e. they will still need passwords
-   * even if the database is in a public subnet).
-   *
-   * The default assumption if this is not present is that all infrastructure
-   * is as locked down as possible.
+   * A manually incrementing number that will rotate IAM users.
    */
-  isDevelopment?: boolean;
+  readonly iamSerial?: number;
 
+  /**
+   * Bucket paths. For each bucket that we want this object signer to work with, we list
+   * the Keys within that bucket as wildcards. This goes to setting the precise S3
+   * read permissions for the IAM user.
+   * e.g.
+   *  {
+   *    "my-bucket": [ "Cardiac2022/*", "Mito/*manifest.txt" ]
+   *  }
+   */
+  readonly dataBucketPaths: { [bucket: string]: string[] };
+}
+
+export interface GCSProps {
+  /**
+   * The name of the bucket in GCS we want to share - currently ignored - this is set inside GCP
+   */
+  readonly bucket: string;
+}
+
+export interface CloudFlareProps {
+  /**
+   * The name of the bucket in CloudFlare we want to share - currently ignored - this is set by CloudFlare
+   */
+  readonly bucket: string;
+}
+
+export interface ObjectSigningStackProps extends StackProps {
   /**
    * The name of a previously installed stack providing us with network/db/storage/cert infrastructure
    * via cloud formation exports.
@@ -21,53 +40,19 @@ export interface ObjectSigningStackProps extends StackProps {
   readonly infrastructureStackName: string;
 
   /**
-   * The description of the infrastructure as used for the CloudFormation stack.
-   * This gives devops an immediate feedback on the purpose of the stack so
-   * should be descriptive of the service/project.
-   * "Infrastructure for Blah - an application used to discover novel variants"
-   */
-  readonly description: string;
-
-  /**
    * If present instructs us to enable S3 object signing
    */
-  s3?: {
-    /**
-     * A manually incrementing number that will rotate IAM users.
-     */
-    readonly iamSerial: number;
-
-    /**
-     * Bucket paths. For each bucket that we want this object signer to work with, we list
-     * the Keys within that bucket as wildcards. This goes to setting the precise S3
-     * read permissions for the IAM user.
-     * e.g.
-     *  {
-     *    "my-bucket": [ "Cardiac2022/*", "Mito/*manifest.txt" ]
-     *  }
-     */
-    readonly dataBucketPaths: { [bucket: string]: string[] };
-  };
+  readonly s3?: S3Props;
 
   /**
    * If present instructs us to enable GCS object signing
    */
-  gcs?: {
-    /**
-     * The name of the bucket in GCS we want to share - currently ignored - this is set inside GCP
-     */
-    readonly bucket: string;
-  };
+  readonly gcs?: GCSProps;
 
   /**
    * If present instructs us to enable CloudFlare object signing
    */
-  cloudFlare?: {
-    /**
-     * The name of the bucket in CloudFlare we want to share - currently ignored - this is set by CloudFlare
-     */
-    readonly bucket: string;
-  };
+  readonly cloudFlare?: CloudFlareProps;
 
   /**
    * A prefix that is used for constructing any AWS secrets (i.e. postgres password)

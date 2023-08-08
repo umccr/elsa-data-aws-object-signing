@@ -1,5 +1,4 @@
 import { CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
-import { Construct } from "constructs";
 import { ObjectSigningStackProps } from "./object-signing-stack-props";
 import {
   AccessKey,
@@ -11,6 +10,17 @@ import {
 import { Secret } from "aws-cdk-lib/aws-secretsmanager";
 import { Service } from "aws-cdk-lib/aws-servicediscovery";
 import { createNamespaceFromLookup } from "./create-namespace-from-lookup";
+import { Construct } from "constructs";
+
+/**
+ * For JSII we need to export these property interfaces.
+ */
+export {
+  ObjectSigningStackProps,
+  GCSProps,
+  S3Props,
+  CloudFlareProps,
+} from "./object-signing-stack-props";
 
 /**
  * A stack that creates an IAM user
