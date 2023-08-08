@@ -1,12 +1,12 @@
 {
   "name": "@umccr/elsa-data-aws-object-signing",
-  "version": "1.0.1",
+  "version": "0.0.0",
   "description": "A CDK stack for adding Object Signing to an Elsa Data installation",
-  "homepage": "Your repo URL or homepage",
+  "homepage": "https://github.com/umccr/elsa-data-aws-object-signing",
   "license": "MIT",
   "author": {
     "name": "Andrew Patterson",
-    "email": "Your email address"
+    "email": "andrew.patterson@umccr.org"
   },
   "repository": {
     "type": "git",
