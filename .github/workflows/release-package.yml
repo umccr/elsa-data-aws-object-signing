@@ -1,6 +1,8 @@
 name: Release Package
 
-on: [push]
+on:
+  release:
+    types: [released]
 
 defaults:
   run:
@@ -20,6 +22,8 @@ jobs:
           cache-dependency-path: workload-object-signing/package-lock.json
 
       - run: npm ci
+
+      - run: npm version ${{github.ref_name}}
 
       - run: npm run build
 
