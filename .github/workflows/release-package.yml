@@ -28,4 +28,5 @@ jobs:
       - run: npx publib-npm
         env:
           NPM_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
+          NPM_REGISTRY: registry.npmjs.org
           NPM_ACCESS_LEVEL: public
