@@ -1,6 +1,6 @@
 {
   "name": "@umccr/elsa-data-aws-object-signing",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CDK stack for adding Object Signing to an Elsa Data installation",
   "homepage": "Your repo URL or homepage",
   "license": "MIT",

@@ -1,4 +1,4 @@
-import { App, CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
+import { CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
 import { ObjectSigningStackProps } from "./object-signing-stack-props";
 import {
   AccessKey,
@@ -10,6 +10,7 @@ import {
 import { Secret } from "aws-cdk-lib/aws-secretsmanager";
 import { Service } from "aws-cdk-lib/aws-servicediscovery";
 import { createNamespaceFromLookup } from "./create-namespace-from-lookup";
+import { Construct } from "constructs";
 
 /**
  * For JSII we need to export these property interfaces.
@@ -29,7 +30,7 @@ export {
  * running in AWS but able to sign GCS/CloudFlare urls)
  */
 export class ObjectSigningStack extends Stack {
-  constructor(scope: App, id: string, props: ObjectSigningStackProps) {
+  constructor(scope: Construct, id: string, props: ObjectSigningStackProps) {
     super(scope, id, props);
 
     this.templateOptions.description = props.description;
