@@ -10,10 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/umccrf/elsa-data-aws-object-signing.git"
-  },
-  "publishConfig": {
-    "@umccr:registry": "https://npm.pkg.github.com"
+    "url": "git+https://github.com/umccr/elsa-data-aws-object-signing.git"
   },
   "main": "object-signing-stack.js",
   "types": "object-signing-stack.d.ts",
