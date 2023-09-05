@@ -1,4 +1,4 @@
-import { CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
+import { CfnOutput, SecretValue, Stack, StackProps } from "aws-cdk-lib";
 import { ObjectSigningStackProps } from "./object-signing-stack-props";
 import {
   AccessKey,
@@ -9,8 +9,8 @@ import {
 } from "aws-cdk-lib/aws-iam";
 import { Secret } from "aws-cdk-lib/aws-secretsmanager";
 import { Service } from "aws-cdk-lib/aws-servicediscovery";
-import { createNamespaceFromLookup } from "./create-namespace-from-lookup";
 import { Construct } from "constructs";
+import { InfrastructureClient } from "@elsa-data/aws-infrastructure-client";
 
 /**
  * For JSII we need to export these property interfaces.
@@ -30,15 +30,23 @@ export {
  * running in AWS but able to sign GCS/CloudFlare urls)
  */
 export class ObjectSigningStack extends Stack {
-  constructor(scope: Construct, id: string, props: ObjectSigningStackProps) {
+  constructor(
+    scope: Construct,
+    id: string,
+    props: StackProps,
+    objectSigningProps: ObjectSigningStackProps
+  ) {
     super(scope, id, props);
 
     this.templateOptions.description = props.description;
 
-    const namespace = createNamespaceFromLookup(
-      this,
-      props.infrastructureStackName
+    // our client unlocks the ability to fetch/create CDK objects that match our
+    // installed infrastructure stack (by infrastructure stack name)
+    const infraClient = new InfrastructureClient(
+      objectSigningProps.infrastructureStackName
     );
+
+    const namespace = infraClient.getNamespaceFromLookup(this);
 
     // each type of Elsa Data egress registers as a service
     const service = new Service(this, "Service", {
@@ -51,7 +59,7 @@ export class ObjectSigningStack extends Stack {
 
     // if we want to enable S3 - then we take the responsibility for creating the signing user
 
-    if (props.s3) {
+    if (objectSigningProps.s3) {
       // we need a user to exist with the correct (limited) permissions
       const user = new User(this, "User", {});
 
@@ -60,7 +68,7 @@ export class ObjectSigningStack extends Stack {
         new PolicyStatement({
           sid: "ReadBucketLevel",
           effect: Effect.ALLOW,
-          resources: Object.keys(props.s3.dataBucketPaths).map(
+          resources: Object.keys(objectSigningProps.s3.dataBucketPaths).map(
             (k) => `arn:aws:s3:::${k}`
           ),
           actions: ["s3:GetBucketLocation"],
@@ -70,7 +78,9 @@ export class ObjectSigningStack extends Stack {
       // read only policies at the object level include all the key paths passed in
       // for every bucket
       const res: string[] = [];
-      for (const [b, keys] of Object.entries(props.s3.dataBucketPaths)) {
+      for (const [b, keys] of Object.entries(
+        objectSigningProps.s3.dataBucketPaths
+      )) {
         for (const k of keys) {
           res.push(`arn:aws:s3:::${b}/${k}`);
         }
@@ -87,13 +97,13 @@ export class ObjectSigningStack extends Stack {
 
       const accessKey = new AccessKey(this, "AccessKey", {
         user,
-        serial: props.s3.iamSerial,
+        serial: objectSigningProps.s3.iamSerial,
         status: AccessKeyStatus.ACTIVE,
       });
 
       const secret = new Secret(
         this,
-        `${props.secretsPrefix || ""}S3ObjectSigningSecret`,
+        `${objectSigningProps.secretsPrefix || ""}S3ObjectSigningSecret`,
         {
           description:
             "Secret containing the access key for an AWS IAM user who does Elsa Data object signing",
@@ -115,10 +125,10 @@ export class ObjectSigningStack extends Stack {
     // for GCS - we cannot create the users - but we can manage the registration of the secret that will hold
     // their credentials
 
-    if (props.gcs) {
+    if (objectSigningProps.gcs) {
       const secret = new Secret(
         this,
-        `${props.secretsPrefix || ""}GcsObjectSigningSecret`,
+        `${objectSigningProps.secretsPrefix || ""}GcsObjectSigningSecret`,
         {
           description:
             "Secret containing the JSON credentials for a Google Service Account that does Elsa Data object signing",
@@ -143,10 +153,10 @@ export class ObjectSigningStack extends Stack {
     // similarly for CloudFlare - we cannot create the API tokens - but we can manage the registration of the secret that will hold
     // them
 
-    if (props.cloudFlare) {
+    if (objectSigningProps.cloudFlare) {
       const secret = new Secret(
         this,
-        `${props.secretsPrefix || ""}R2ObjectSigningSecret`,
+        `${objectSigningProps.secretsPrefix || ""}R2ObjectSigningSecret`,
         {
           description:
             "Secret containing an API token for CloudFlare that does Elsa Data object signing",
