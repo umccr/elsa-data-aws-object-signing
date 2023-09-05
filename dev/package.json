@@ -1,0 +1,19 @@
+{
+  "name": "manual",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Manual CDK deployment for development",
+  "dependencies": {
+    "aws-cdk": "2.93.0",
+    "aws-cdk-lib": "2.93.0",
+    "cdk-nag": "2.27.122",
+    "aws-object-signing-sharer": "link:../packages/aws-object-signing-sharer"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "18.2.0",
+    "@types/node": "18.17.3",
+    "prettier": "3.0.1",
+    "ts-node": "10.9.1",
+    "typescript": "5.1.6"
+  }
+}

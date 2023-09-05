@@ -42,7 +42,7 @@ service that is best under explicit manual deployment control.
 ### Refreshing IAM User Keys
 
 If the IAM access key need to be rotated for security compliance - edit
-the `iamSerial` value in the corresponding stack in `stacks.ts` - then deploy.
+the `iamSerial` value in the corresponding stack in `dev.ts` - then deploy.
 Each increment of this
 value will cause a new IAM access key to be created.
 

@@ -4,33 +4,37 @@ on:
   release:
     types: [released]
 
-defaults:
-  run:
-    working-directory: workload-object-signing
-
 jobs:
-  publish-to-github-package-registry:
+  publish-to-npm-registry:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
+      - uses: pnpm/action-setup@v2
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "npm"
-          cache-dependency-path: workload-object-signing/package-lock.json
+          cache: "pnpm"
 
-      - run: npm ci
+      - run: pnpm install
 
-      - run: npm version ${{github.ref_name}}
+      # first set the versions of our package to the release version
 
-      - run: npm run build
+      - run: pnpm version ${{github.ref_name}}
+        working-directory: packages/aws-object-signing-sharer
 
-      - run: npm run package
+      # build and package
 
-      - run: npx publib-npm
+      - run: pnpm run build
+
+      - run: pnpm run package
+
+      # if all the builds have completed - we can publish the package
+
+      - run: pnpm exec publib-npm
+        working-directory: packages/aws-object-signing-sharer
         env:
           NPM_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
-          NPM_REGISTRY: registry.npmjs.org
           NPM_ACCESS_LEVEL: public

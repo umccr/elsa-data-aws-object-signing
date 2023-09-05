@@ -1,5 +1,3 @@
-import { StackProps } from "aws-cdk-lib";
-
 export interface S3Props {
   /**
    * A manually incrementing number that will rotate IAM users.
@@ -32,7 +30,7 @@ export interface CloudFlareProps {
   readonly bucket: string;
 }
 
-export interface ObjectSigningStackProps extends StackProps {
+export interface ObjectSigningStackProps {
   /**
    * The name of a previously installed stack providing us with network/db/storage/cert infrastructure
    * via cloud formation exports.
