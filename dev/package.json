@@ -7,7 +7,7 @@
     "aws-cdk": "2.93.0",
     "aws-cdk-lib": "2.93.0",
     "cdk-nag": "2.27.122",
-    "aws-object-signing-sharer": "link:../packages/aws-object-signing-sharer"
+    "aws-object-signing-sharer": "file:../packages/aws-object-signing-sharer"
   },
   "devDependencies": {
     "@tsconfig/node18": "18.2.0",
