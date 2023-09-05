@@ -30,12 +30,10 @@
   "dependencies": {
     "@elsa-data/aws-infrastructure-client": "1.2.4"
   },
-  "bundledDependencies": [
-    "@elsa-data/aws-infrastructure-client"
-  ],
   "peerDependencies": {
     "aws-cdk-lib": "^2.93.0",
-    "constructs": "^10.2.69"
+    "constructs": "^10.2.69",
+    "@elsa-data/aws-infrastructure-client": "^1.2.4"
   },
   "devDependencies": {
     "@types/node": "18.17.3",

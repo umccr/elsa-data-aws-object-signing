@@ -23,8 +23,8 @@ importers:
         specifier: 2.93.0
         version: 2.93.0(constructs@10.2.70)
       aws-object-signing-sharer:
-        specifier: link:../packages/aws-object-signing-sharer
-        version: link:../packages/aws-object-signing-sharer
+        specifier: file:../packages/aws-object-signing-sharer
+        version: file:packages/aws-object-signing-sharer(@elsa-data/aws-infrastructure-client@1.2.4)(aws-cdk-lib@2.93.0)(constructs@10.2.70)
       cdk-nag:
         specifier: 2.27.122
         version: 2.27.122(aws-cdk-lib@2.93.0)(constructs@10.2.70)
@@ -3143,3 +3143,18 @@ packages:
       }
     engines: { node: ">=6" }
     dev: true
+
+  file:packages/aws-object-signing-sharer(@elsa-data/aws-infrastructure-client@1.2.4)(aws-cdk-lib@2.93.0)(constructs@10.2.70):
+    resolution:
+      { directory: packages/aws-object-signing-sharer, type: directory }
+    id: file:packages/aws-object-signing-sharer
+    name: "@elsa-data/aws-object-signing-sharer"
+    peerDependencies:
+      "@elsa-data/aws-infrastructure-client": ^1.2.4
+      aws-cdk-lib: ^2.93.0
+      constructs: ^10.2.69
+    dependencies:
+      "@elsa-data/aws-infrastructure-client": 1.2.4(aws-cdk-lib@2.93.0)(constructs@10.2.70)
+      aws-cdk-lib: 2.93.0(constructs@10.2.70)
+      constructs: 10.2.70
+    dev: false
