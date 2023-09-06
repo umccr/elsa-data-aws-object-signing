@@ -48,6 +48,8 @@ export class ObjectSigningStack extends Stack {
 
     const namespace = infraClient.getNamespaceFromLookup(this);
 
+    const secretsPrefix = infraClient.getSecretsPrefixFromLookup(this);
+
     // each type of Elsa Data egress registers as a service
     const service = new Service(this, "Service", {
       namespace: namespace,
@@ -101,18 +103,14 @@ export class ObjectSigningStack extends Stack {
         status: AccessKeyStatus.ACTIVE,
       });
 
-      const secret = new Secret(
-        this,
-        `${objectSigningProps.secretsPrefix || ""}S3ObjectSigningSecret`,
-        {
-          description:
-            "Secret containing the access key for an AWS IAM user who does Elsa Data object signing",
-          secretObjectValue: {
-            accessKeyId: SecretValue.unsafePlainText(accessKey.accessKeyId),
-            secretAccessKey: accessKey.secretAccessKey,
-          },
-        }
-      );
+      const secret = new Secret(this, `${secretsPrefix}S3ObjectSigningSecret`, {
+        description:
+          "Secret containing the access key for an AWS IAM user who does Elsa Data object signing",
+        secretObjectValue: {
+          accessKeyId: SecretValue.unsafePlainText(accessKey.accessKeyId),
+          secretAccessKey: accessKey.secretAccessKey,
+        },
+      });
 
       outputAttributes["s3AccessKeySecretName"] = secret.secretName;
 
@@ -128,7 +126,7 @@ export class ObjectSigningStack extends Stack {
     if (objectSigningProps.gcs) {
       const secret = new Secret(
         this,
-        `${objectSigningProps.secretsPrefix || ""}GcsObjectSigningSecret`,
+        `${secretsPrefix}GcsObjectSigningSecret`,
         {
           description:
             "Secret containing the JSON credentials for a Google Service Account that does Elsa Data object signing",
@@ -154,18 +152,14 @@ export class ObjectSigningStack extends Stack {
     // them
 
     if (objectSigningProps.cloudFlare) {
-      const secret = new Secret(
-        this,
-        `${objectSigningProps.secretsPrefix || ""}R2ObjectSigningSecret`,
-        {
-          description:
-            "Secret containing an API token for CloudFlare that does Elsa Data object signing",
-          secretObjectValue: {
-            accessKeyId: SecretValue.unsafePlainText("TO BE REPLACED"),
-            secretAccessKey: SecretValue.unsafePlainText("TO BE REPLACED"),
-          },
-        }
-      );
+      const secret = new Secret(this, `${secretsPrefix}R2ObjectSigningSecret`, {
+        description:
+          "Secret containing an API token for CloudFlare that does Elsa Data object signing",
+        secretObjectValue: {
+          accessKeyId: SecretValue.unsafePlainText("TO BE REPLACED"),
+          secretAccessKey: SecretValue.unsafePlainText("TO BE REPLACED"),
+        },
+      });
 
       outputAttributes["r2ApiTokenSecretName"] = secret.secretName;
 

@@ -45,6 +45,5 @@ new ObjectSigningStack(
     cloudFlare: {
       bucket: "abucket",
     },
-    secretsPrefix: "ElsaData", // pragma: allowlist secret
   }
 );
