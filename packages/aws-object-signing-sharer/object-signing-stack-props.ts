@@ -51,15 +51,4 @@ export interface ObjectSigningStackProps {
    * If present instructs us to enable CloudFlare object signing
    */
   readonly cloudFlare?: CloudFlareProps;
-
-  /**
-   * A prefix that is used for constructing any AWS secrets (i.e. postgres password)
-   * If empty - the default AWS naming is used (which are decent names
-   * but possibly uninformative of which postgres for instance). Eg we might end
-   * up with 5 RdsSecretXYZ, RdsSecretAbc.. this allows to make
-   * MyAppRdsSecretXYZ
-   * this also helps out by allowing us to make wildcard secret policies that
-   * encompass all secrets with the prefix
-   */
-  readonly secretsPrefix?: string;
 }
