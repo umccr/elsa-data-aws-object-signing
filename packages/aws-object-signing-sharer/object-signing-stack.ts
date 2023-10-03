@@ -19,6 +19,7 @@ export {
   ObjectSigningStackProps,
   GCSProps,
   S3Props,
+  S3CreateUserProps,
   CloudFlareProps,
 } from "./object-signing-stack-props";
 
@@ -62,61 +63,87 @@ export class ObjectSigningStack extends Stack {
     // if we want to enable S3 - then we take the responsibility for creating the signing user
 
     if (objectSigningProps.s3) {
-      // we need a user to exist with the correct (limited) permissions
-      const user = new User(this, "User", {});
+      let secretName: string;
 
-      // read-only policies at the bucket level (possibly not needed at all - revisit)
-      user.addToPolicy(
-        new PolicyStatement({
-          sid: "ReadBucketLevel",
-          effect: Effect.ALLOW,
-          resources: Object.keys(objectSigningProps.s3.dataBucketPaths).map(
-            (k) => `arn:aws:s3:::${k}`
-          ),
-          actions: ["s3:GetBucketLocation"],
-        })
-      );
+      // we can allow the CDK the manage the creation of the user and their permissions
+      // this is preferred - however there can be reasons why this is not allowed - and hence
+      // we also can run in a mode where the secret is created but has to be filled in manually
+      if (objectSigningProps.s3.createUser) {
+        // we need a user to exist with the correct (limited) permissions
+        const user = new User(this, "User", {});
 
-      // read only policies at the object level include all the key paths passed in
-      // for every bucket
-      const res: string[] = [];
-      for (const [b, keys] of Object.entries(
-        objectSigningProps.s3.dataBucketPaths
-      )) {
-        for (const k of keys) {
-          res.push(`arn:aws:s3:::${b}/${k}`);
+        // read-only policies at the bucket level (possibly not needed at all - revisit)
+        user.addToPolicy(
+          new PolicyStatement({
+            sid: "ReadBucketLevel",
+            effect: Effect.ALLOW,
+            resources: Object.keys(
+              objectSigningProps.s3.createUser.dataBucketPaths
+            ).map((k) => `arn:aws:s3:::${k}`),
+            actions: ["s3:GetBucketLocation"],
+          })
+        );
+
+        // read only policies at the object level include all the key paths passed in
+        // for every bucket
+        const res: string[] = [];
+        for (const [b, keys] of Object.entries(
+          objectSigningProps.s3.createUser.dataBucketPaths
+        )) {
+          for (const k of keys) {
+            res.push(`arn:aws:s3:::${b}/${k}`);
+          }
         }
+
+        user.addToPolicy(
+          new PolicyStatement({
+            sid: "ReadObjectLevel",
+            effect: Effect.ALLOW,
+            resources: res,
+            actions: ["s3:GetObject", "s3:GetObjectTagging"],
+          })
+        );
+
+        const accessKey = new AccessKey(this, "AccessKey", {
+          user,
+          serial: objectSigningProps.s3.createUser.iamSerial,
+          status: AccessKeyStatus.ACTIVE,
+        });
+
+        const secret = new Secret(
+          this,
+          `${secretsPrefix}S3ObjectSigningManagedSecret`,
+          {
+            description:
+              "Secret containing the access key for an AWS IAM user who does Elsa Data object signing",
+            secretObjectValue: {
+              accessKeyId: SecretValue.unsafePlainText(accessKey.accessKeyId),
+              secretAccessKey: accessKey.secretAccessKey,
+            },
+          }
+        );
+        secretName = secret.secretName;
+      } else {
+        const secret = new Secret(
+          this,
+          `${secretsPrefix}S3ObjectSigningManualSecret`,
+          {
+            description:
+              "Secret containing the access key for an AWS IAM user who does Elsa Data object signing",
+            secretObjectValue: {
+              accessKeyId: SecretValue.unsafePlainText("TO BE REPLACED"),
+              secretAccessKey: SecretValue.unsafePlainText("TO BE REPLACED"),
+            },
+          }
+        );
+        secretName = secret.secretName;
       }
 
-      user.addToPolicy(
-        new PolicyStatement({
-          sid: "ReadObjectLevel",
-          effect: Effect.ALLOW,
-          resources: res,
-          actions: ["s3:GetObject", "s3:GetObjectTagging"],
-        })
-      );
-
-      const accessKey = new AccessKey(this, "AccessKey", {
-        user,
-        serial: objectSigningProps.s3.iamSerial,
-        status: AccessKeyStatus.ACTIVE,
-      });
-
-      const secret = new Secret(this, `${secretsPrefix}S3ObjectSigningSecret`, {
-        description:
-          "Secret containing the access key for an AWS IAM user who does Elsa Data object signing",
-        secretObjectValue: {
-          accessKeyId: SecretValue.unsafePlainText(accessKey.accessKeyId),
-          secretAccessKey: accessKey.secretAccessKey,
-        },
-      });
-
-      outputAttributes["s3AccessKeySecretName"] = secret.secretName;
+      outputAttributes["s3AccessKeySecretName"] = secretName;
 
       new CfnOutput(this, "S3SecretOutput", {
         exportName: "S3ObjectSigningSecret",
-        value: secret.secretName,
+        value: secretName,
       });
     }
 

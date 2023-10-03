@@ -720,6 +720,7 @@ packages:
     dependencies:
       aws-cdk-lib: 2.93.0(constructs@10.2.70)
       constructs: 10.2.70
+      shared: link:../shared
     dev: false
     bundledDependencies:
       - shared
@@ -1911,7 +1912,7 @@ packages:
     dependencies:
       semver: 7.5.4
       shelljs: 0.8.5
-      typescript: 5.3.0-dev.20230905
+      typescript: 5.3.0-dev.20231002
     dev: true
 
   /emoji-regex@8.0.0:
@@ -2985,10 +2986,10 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript@5.3.0-dev.20230905:
+  /typescript@5.3.0-dev.20231002:
     resolution:
       {
-        integrity: sha512-Nl9MoKWN0YYlCvQnw850L4ZgqdmqwVGCi9cAoQDw4PsqRGaWAi9HKizS9xu0q4qgKKsEKetWCZHT8dBtJTGaMg==,
+        integrity: sha512-TQXM13rrDgID8W4Ok4KDQAqwLUjLcAXL+NKv0zJiIEQfa0bOM0yoRiSgvcjaCJ4lZT4bScrq3vHspVM2x8rkOQ==,
       }
     engines: { node: ">=14.17" }
     hasBin: true

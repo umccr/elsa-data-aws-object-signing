@@ -10,8 +10,8 @@ const app = new App();
 
 // tags for our stacks
 const tags = {
-  "umccr-org:Stack": "ElsaDataObjectSigning",
-  "umccr-org:Product": "ElsaData",
+  "org.umccr:Stack": "ElsaDataObjectSigning",
+  "org.umccr:Product": "ElsaData",
 };
 
 const description =
@@ -32,11 +32,15 @@ new ObjectSigningStack(
   {
     infrastructureStackName: "ElsaDataDevInfrastructureStack",
     s3: {
-      iamSerial: 1,
-      dataBucketPaths: {
-        "umccr-10c-data-dev": ["*"],
-        "umccr-10f-data-dev": ["*"],
-        "umccr-10g-data-dev": ["*"],
+      // we can also test deployed a manually create IAM user
+      // createUser: undefined,
+      createUser: {
+        iamSerial: 1,
+        dataBucketPaths: {
+          "umccr-10c-data-dev": ["*"],
+          "umccr-10f-data-dev": ["*"],
+          "umccr-10g-data-dev": ["*"],
+        },
       },
     },
     gcs: {
