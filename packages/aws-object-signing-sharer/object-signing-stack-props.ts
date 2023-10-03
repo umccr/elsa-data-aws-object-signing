@@ -1,5 +1,13 @@
 export interface S3Props {
   /**
+   * If present, instructs the stack to attempt to create a user. If not present,
+   * just makes a secret that can be filled in by hand (much the same as the GCS etc).
+   */
+  readonly createUser?: S3CreateUserProps;
+}
+
+export interface S3CreateUserProps {
+  /**
    * A manually incrementing number that will rotate IAM users.
    */
   readonly iamSerial?: number;
